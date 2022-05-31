@@ -393,3 +393,5 @@ $P(S=w_1w_2\dots w_m)=P(w_1)P(w_2|w_1)\dots P(w_m|w_1\dots w_{m-1})$
 #### 逻辑表示
 ### wordnet
 ### hownet
+
+abcde
