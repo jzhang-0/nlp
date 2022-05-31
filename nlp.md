@@ -41,22 +41,22 @@
 
 * 形式文法
 
-  * 四元组进行描述{VT, VN, S, P}
+  * 四元组进行描述$\{V_T, V_N, S, P\}$
 
-    * VT：终结符（Terminals）(单词)
-    * VN：非终结符（Non-terminals）（形式变量）
-    * S：起始符（形式变量，归在VN中，不用写）
-    * P：具体的生成规则
+    * $V_T$：终结符（Terminals）(单词)
+    * $V_N$：非终结符（Non-terminals）（形式变量）
+    * $S$：起始符（形式变量，归在VN中，不用写）
+    * $P$：具体的生成规则
 
   * 例子
 
     设形式文法G的
 
-    VT={the, John, ate, apple}，
+    $V_T$={the, John, ate, apple}，
 
-    VN={S, NP, VP, ART, N, V, NAME}, 
+    $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
 
-    $P={1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N, 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple}$
+    $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
 
     其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
 
@@ -79,8 +79,18 @@
     ​     John ate the apple   (重写N) 
 
 
-* 乔姆斯基文法（看不懂，ppt写得太垃圾）
+* **乔姆斯基文法**
   * 一种短语文法（PSG：Phrasal Structure Grammar）
+  * 刻画[形式文法](https://baike.baidu.com/item/形式文法)表达能力的一个分类谱系，由Chomsky于1956年提出的。
+  * 包括四个层次：0型，1型，2型，3型，由前到后有包含关系
+  * 下述表示中，大写英文字母表示非终结字符，希腊字母表示非终结与终结字符构成的字串。
+  * **0型文法**：短语文法，相当于图灵机
+    * 产生式：$\alpha\rightarrow\beta$（无限制）
+    * 限制：$\alpha,\beta$为包含非终结符或终结符的字串，$\beta$可为空串；$\alpha$至少包含一非终结符
+  * **1型文法**：上下文有关文法，相当于线性有界非确定图灵机
+    * 产生式：$\alpha A\beta\rightarrow \alpha\gamma\beta$
+    * 限制：$A$非终结字符，$\gamma$不为空串，右侧不能包含$S$.
+  * **2型文法**：上下文无关文法，
 * 索引文法（没具体例子，ppt太垃圾）
   * 和形式文法比起来多了个$V_I$表示索引的有限集合
 * **范畴文法（重点）**
