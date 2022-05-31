@@ -195,9 +195,54 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 * 一些规则规定
   * ![image-20220530173808149](nlp.assets/image-20220530173808149.png)
 
-### 英语的基本特征系统（TODO）
+### 英语的基本特征系统
 
- 
+*  人称和数（第一人称单数，复数等等）
+
+  * 一般用一个特征AGR表示，可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
+  * are 的AGR特征取值$\{2s, 1p, 2p, 3p\}$
+
+*  动词形式
+
+  * 用特征VFORM表示
+
+  * 可能的取值
+
+    * **base**—**动词原型**
+    * **pres**—**一般现在时**
+    * **past**—**一般过去时**
+    * **fin**—**限定式**(finite，等价于{**pres**, past})
+    * **ing**—**现在进行时**
+    * **pastprt**—**过去完成时**
+    * **inf**—**不定式**
+
+*  **动词次范畴**
+
+   *  特征SUBCAT
+
+   *  处理词与其**补足语**之间的相互作用
+
+      *  e.g. I can't get him to talk.
+
+      *  $  (VP) \rightarrow\{(V\ \ SUBCAT \_np\_vp: inf)$
+
+         ​         $(NP)$
+
+         ​         $(VP\ \  VFORM\ \ inf)\}$
+
+      *  VFORM的inf取值对应不定式，动词get接NP（him）再接一个不定式作为补足语（to talk）
+
+   *  补语结构中可能含有介词短语（PP）
+
+      *  pp特征PFORM可能的取值
+         *  TO：短语以to开头
+         *  LOC：描述地点
+         *  MOT：描述路径或运动方向（we walked to the store ）
+
+   *  SUBCAT的一些取值及例子
+
+      *  ![image-20220531162732850](nlp.assets/image-20220531162732850.png)
+
 
 ## 6 统计语言模型
 
