@@ -31,77 +31,121 @@
 
 ## 2. 形式语言与自动机
 
-* 基本概念
+### 基本概念
 
-  * 文法
-    * 给出生成语言中所有句子的方法
-    * 当且仅当能够用该方法产生的句子才属于该语言
-  * 自动机
-    * 给出识别该语言中句子的机械方法
+* 文法
+  * 给出生成语言中所有句子的方法
+  * 当且仅当能够用该方法产生的句子才属于该语言
+* 自动机
+  * 给出识别该语言中句子的机械方法
 
-* 形式文法
+### 形式文法
 
-  * 四元组进行描述$\{V_T, V_N, S, P\}$
+* 四元组进行描述$\{V_T, V_N, S, P\}$
 
-    * $V_T$：终结符（Terminals）(单词)
-    * $V_N$：非终结符（Non-terminals）（形式变量）
-    * $S$：起始符（形式变量，归在VN中，不用写）
-    * $P$：具体的生成规则
+  * $V_T$：终结符（Terminals）(单词)
+  * $V_N$：非终结符（Non-terminals）（形式变量）
+  * $S$：起始符（形式变量，归在VN中，不用写）
+  * $P$：具体的生成规则
 
-  * 例子
+* 例子
 
-    设形式文法G的
+  设形式文法G的
 
-    $V_T$={the, John, ate, apple}，
+  $V_T$={the, John, ate, apple}，
 
-    $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
+  $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
 
-    $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
+  $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
 
-    其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
+  其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
 
-    1，3，5；2，6；4，7，8
+  1，3，5；2，6；4，7，8
 
-       S - NP VP            (重写S)
+     S - NP VP            (重写S)
 
-    ​     NAME VP         (重写NP)
+  ​     NAME VP         (重写NP)
 
-    ​     John VP          (重写NAME)
+  ​     John VP          (重写NAME)
 
-    ​     John V NP         (重写VP)
+  ​     John V NP         (重写VP)
 
-    ​     John ate NP        (重写V)
+  ​     John ate NP        (重写V)
 
-    ​     John ate ART N     (重写NP)
+  ​     John ate ART N     (重写NP)
 
-    ​     John ate the N      (重写ART)
+  ​     John ate the N      (重写ART)
 
-    ​     John ate the apple   (重写N) 
+  ​     John ate the apple   (重写N) 
+
+### 乔姆斯基文法
+
+* 刻画[形式文法](https://baike.baidu.com/item/形式文法)表达能力的一个分类谱系，由Chomsky于1956年提出的。
+* 包括四个层次：0型，1型，2型，3型，由前到后有包含关系
+* 下述表示中，大写英文字母表示非终结字符，希腊字母表示非终结与终结字符构成的字串。
+* **0型文法**：短语文法，相当于图灵机（PSG：Phrasal Structure Grammar），半可判定的
+  * 产生式：$\alpha\rightarrow\beta$（无限制）
+  * 限制：$\alpha,\beta$为包含非终结符或终结符的字串，$\beta$可为空串；$\alpha$至少包含一非终结符
+* **1型文法**：上下文有关文法，相当于线性有界非确定图灵机(CSG：Context Sensitive Grammar)，NP完全
+  * 产生式：$\alpha A\beta\rightarrow \alpha\gamma\beta$
+  * 限制：$A$非终结字符，$\gamma$不为空串，右侧不能包含$S$.
+* **2型文法**：上下文无关文法，相当于非确定下推自动机(CFG: Context Free Grammar)，多项式的
+  * 产生式：$A\rightarrow \gamma$
+  * 限制：$A$非终结字符，$\gamma$字串
+* **3型文法**：正规文法，相当于有限状态自动机，又分为左线性文法和右线性文法(RG: Regular Grammar)，线性复杂度的
+  * **左线性文法**：产生式：$A\rightarrow Ba$或$A\rightarrow a$
+    * 限制：$A，B$非终结符，$a$终结符
+  * **右线性文法**：产生式：$A\rightarrow aB$或$A\rightarrow a$
+    * 限制：$A,B$非终结符，$a$终结符
+
+### 索引文法
+
+(Index Grammar)介于1型和2型之间的语法类别，除此之外还有树粘接文法（TAG：Tree Adjoining Grammar）
+
+* 定义为五元组$\{V_T, V_N,V_I, S, P\}$,和形式文法相比多出$V_I$表示索引的有限集合
+
+* $P$为规则的有限集合，可能的形式如下，其中$A,B\in V_N,f\in V_I,\alpha\in(V_N\cup V_T)^*$
+
+  * 1) $A\rightarrow\alpha$
+
+    2. $A\rightarrow B(f)$
+
+    3. $A(f)\rightarrow\alpha$
+
+* 规则的推导如下,其中，当$X_i\in V_N,\delta_i=\delta; X_i\in V_T,\delta_i=\varepsilon$
+
+  * 形如1.的规则$A\rightarrow X_1 X_2\cdots X_k$,$\beta A(\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
+  * 形如2.的规则$A\rightarrow B(f)$，$\beta A(\delta)\gamma\Rightarrow\beta B(f\delta)\gamma$
+  * 形如3.的规则$A(f)\rightarrow X_1X_2\cdots X_k$,$\beta A(f\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
 
 
-* **乔姆斯基文法**
-  * 一种短语文法（PSG：Phrasal Structure Grammar）
-  * 刻画[形式文法](https://baike.baidu.com/item/形式文法)表达能力的一个分类谱系，由Chomsky于1956年提出的。
-  * 包括四个层次：0型，1型，2型，3型，由前到后有包含关系
-  * 下述表示中，大写英文字母表示非终结字符，希腊字母表示非终结与终结字符构成的字串。
-  * **0型文法**：短语文法，相当于图灵机
-    * 产生式：$\alpha\rightarrow\beta$（无限制）
-    * 限制：$\alpha,\beta$为包含非终结符或终结符的字串，$\beta$可为空串；$\alpha$至少包含一非终结符
-  * **1型文法**：上下文有关文法，相当于线性有界非确定图灵机
-    * 产生式：$\alpha A\beta\rightarrow \alpha\gamma\beta$
-    * 限制：$A$非终结字符，$\gamma$不为空串，右侧不能包含$S$.
-  * **2型文法**：上下文无关文法，相当于非确定下推自动机
-    * 产生式：$A\rightarrow \gamma$
-    * 限制：$A$非终结字符，$\gamma$字串
-  * **3型文法**：正规文法，相当于有限状态自动机，又分为左线性文法和右线性文法
-    * **左线性文法**：产生式：$A\rightarrow Ba$或$A\rightarrow a$
-      * 限制：$A，B$非终结符，$a$终结符
-    * **右线性文法**：产生式：$A\rightarrow aB$或$A\rightarrow a$
-      * 限制：$A,B$非终结符，$a$终结符
-* 索引文法（没具体例子，ppt太垃圾）
-  * 和形式文法比起来多了个$V_I$表示索引的有限集合
-* **范畴文法（重点）**
-* 图灵机（pass）
+* 其他文法：链文法，依存文法，范畴文法
+
+### 范畴文法
+
+
+* 核心思想：把语言中的各种成分对应为某种类型/范畴，把构造过程对应为其演算过程。
+* 基本范畴：句子$S$，名词$N$
+* 任意一个语言成分的范畴由$S,N$和运算符'/','\\','(',')'构成
+* 两语言成分间发生结合关系时作对应的“乘法”运算，关键在于“约分”
+* 不同词性的**范畴表示**和**举例**见第二章P5
+* 存在问题：
+
+  * 范畴标记和词性不是一一对应的，确定具体词的范畴标记有难度；
+  * 不负载在词上的结构（如汉语的联合结构（今天或明天）、连谓结构（他**站**起来**走**过去**拿**书））很难纳入范畴语法；
+  * 超距相关的成分（如“王冕死了父亲”中的“王冕”和“父亲”）很难建立约分关系；
+  * 像汉语这样语序灵活、填项省略的语言很难用范畴文法描述。
+
+* 图灵机：第二章P6-7
+
+用上下文无关文法描述自然语言：
+
+
+* 1. 正则语法描述能力太弱，CSG计算复杂度太高；
+  2. CFG的二分特性与人类心理思维规律接近；
+  3. CFG能反映自然语言句子的层次特性，从而得到句子的句法结构；
+  4. CFG能表示句法歧义（见第二章P9）
+  5. 从描述能力而言，CFG不足以描述自然语言，为了弥补需要其他手段扩充其描述能力。
 
 
 
