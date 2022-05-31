@@ -101,11 +101,103 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
 视频时间开始 36.30
 
+## 4 自然语言句法
+
+### 助动词与动词短语
+
+结合新规则和特征约束描述有助动词的句子结构
+
+* 助动词的分类
+
+  * 主要助动词：be, have
+  * 情态动词:do, can,used to, be going to等等
+* 处理方法
+
+  * $VP \rightarrow(AUX\ COMPFORM?s)(VP\ VFORM?s)$
+    * 其中COMPFORM表示一个特征，COMPFORM特征用来表明VP的VFORM是什么
+    * Q：？s表示什么 ？AUX应该表示助动词
+  * COMPFORM特征的取值范围
+	* ![image-20220530151521389](nlp.assets/image-20220530151521389.png)
+  * 助动词be需要进一步约束（由于be 后不能跟其他助动词）
+    * $VP\rightarrow AUX[be]\ VP[ing,+MAIN]$
+      * []表示前面的部分(AUX, VP)只取[]内的值
+      * Q：+表示什么？
+
+### 被动语态（pass）
+
+定义了一些规则，看PPT
+
+### 语言中的移位现象(介绍性)
+
+* 一般疑问句的局部移位：中主语与助动词（或者额外加了个do）互换
+* 特殊疑问句的无界移位：
+  * ![image-20220530154404529](nlp.assets/image-20220530154404529.png)
+* 处理方法
+  * 由于特殊疑问句形式多样，希望能进行统一处理
+  * 句子缺失的成分用缺位(gap)，移入的成分称为填充成分(filler)
+  * e.g. 
+    * What will the fat man angrily put in the corner? -> angrily put what in the corner?
+    * What will the fat man angrily put the book in?” - > angrily put the book in what?
+
+### 上下文无关文法中的疑问句处理
+
+#### 一般疑问句的处理
+
+* $  S[+INV]\rightarrow (AUX\ AGR?a\ \ SUBCAT ?v)(NP \ AGR ?a) (VP\ \ VFORM ?v)$
+  * Q：+INV 应该是疑问句的表示方式？
+  * VP 具有合适的VFORM
+  * Q： AGR？a表示什么？，SUBCAT？v表示什么
+
+#### 特殊疑问句（看ppt，可能比较重要）
+
+### 关系从句（pass）
+
 
 
 ## 5 特征和扩充文法
 
+### 特征系统与扩充句法
 
+#### 特征系统
+
+* 成分的搭配间需要满足一定的约束（名词的单复数），引入特征结构来对成分进行一步刻画
+
+  * e.g. 冠词a
+
+    * **ART1: (CAT ** **ART**
+
+      ​       **ROOT** **a**
+
+      ​       **NUMBER** **s)** 
+
+    * ART1称为特征结构，CAT应该是指成分
+
+* 特征结构之间可以嵌套组成表达能力更强的特征结构
+
+  * e.g. a fish
+
+    * NP1: (NP **NUMBER** s
+
+      ​       **1** (ART **ROOT** a **NUMBER** s)
+
+      ​       **2** (N **ROOT** fish **NUMBER** s)) 
+
+    * 分析树形式
+
+    * ![image-20220530171657783](nlp.assets/image-20220530171657783.png)
+
+#### **扩充文法（重点）**
+
+* 通过引入句子成分的特征变量来实现扩充
+* $(NP\ \ NUMBER?n)\rightarrow(ART\ \ NUMBER?n) (N\ \ NUMBER ?n)$
+  * 这个规则暗含了NP，ART，N这三个成分的NUMBER特征的值要相同，因此下面的例子不合法
+    * ![image-20220530172341278](nlp.assets/image-20220530172341278.png)
+* 一些规则规定
+  * ![image-20220530173808149](nlp.assets/image-20220530173808149.png)
+
+### 英语的基本特征系统（TODO）
+
+ 
 
 ## 6 统计语言模型
 
@@ -239,5 +331,3 @@ $P(S=w_1w_2\dots w_m)=P(w_1)P(w_2|w_1)\dots P(w_m|w_1\dots w_{m-1})$
 #### 逻辑表示
 ### wordnet
 ### hownet
-
-This is a test command.
