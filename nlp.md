@@ -248,10 +248,26 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
          *  TO：短语以to开头
          *  LOC：描述地点
          *  MOT：描述路径或运动方向（we walked to the store ）
+      *  ![image-20220531171206801](nlp.assets/image-20220531171206801.png)
 
    *  SUBCAT的一些取值及例子
 
       *  ![image-20220531162732850](nlp.assets/image-20220531162732850.png)
+
+   *  SUBCAT更多的例子（动词带从句作为补足语）
+
+      *  ![image-20220531171331608](nlp.assets/image-20220531171331608.png)
+
+*  bool特征
+
+   *  INV表示句子是否倒装，取值只有{+,-}
+   *  Did jack laugh? S[+inv]
+      *  通常bool特征的值放在bool特征名前
+
+
+### 词态分析与词典
+
+
 
 
 ## 6 统计语言模型
