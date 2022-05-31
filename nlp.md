@@ -90,7 +90,14 @@
   * **1型文法**：上下文有关文法，相当于线性有界非确定图灵机
     * 产生式：$\alpha A\beta\rightarrow \alpha\gamma\beta$
     * 限制：$A$非终结字符，$\gamma$不为空串，右侧不能包含$S$.
-  * **2型文法**：上下文无关文法，
+  * **2型文法**：上下文无关文法，相当于非确定下推自动机
+    * 产生式：$A\rightarrow \gamma$
+    * 限制：$A$非终结字符，$\gamma$字串
+  * **3型文法**：正规文法，相当于有限状态自动机，又分为左线性文法和右线性文法
+    * **左线性文法**：产生式：$A\rightarrow Ba$或$A\rightarrow a$
+      * 限制：$A，B$非终结符，$a$终结符
+    * **右线性文法**：产生式：$A\rightarrow aB$或$A\rightarrow a$
+      * 限制：$A,B$非终结符，$a$终结符
 * 索引文法（没具体例子，ppt太垃圾）
   * 和形式文法比起来多了个$V_I$表示索引的有限集合
 * **范畴文法（重点）**
@@ -388,3 +395,7 @@ $P(S=w_1w_2\dots w_m)=P(w_1)P(w_2|w_1)\dots P(w_m|w_1\dots w_{m-1})$
 ### hownet
 
 This is a test line.
+This is another test line.
+This is a third test line.
+This is a fourth test line.
+This is the last test line.
