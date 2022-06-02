@@ -151,16 +151,54 @@
 
 ## 3 句法分析
 
-### 线图分析法
+### 自顶向下分析法
+
+又称基于预测的方法，先产生对出现成分的预期，再分析字符以验证预期
+
+基础的分析过程见ppt第三章P1-4
+
+**一种改进方法：**在状态描述中加入正整数表示分析的当前位置
+
+Eg. $ _1\ The\ _2\ old\ _3\ man\ _4\ cried\ _5$,分析过程见第三章P5
+
+### 自底向上分析法-线图分析法
+
+又称基于归约的方法，若整个字符串被归约为$S$,则分析成功。
+
+agenda选取数据结构：堆栈-深度优先，队列-广度优先
 
 https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.click
 
-* CFG规则（e.g. $S \rightarrow NP,VP$）
-* 看手写讲义
+* 举例：分析句子 $ _1\ the\ _2\ boy\ _3\ hits\ _4\ the\ _5\ dog\ _6$
 
-### CYK
+* | Rules                                                        |
+  | ------------------------------------------------------------ |
+  | $S\rightarrow NP\ \ VP$, $NP\rightarrow ART\ \ N$, $VP\rightarrow V\ \ NP $, $VP \rightarrow VP\ \ PP$ , $PP\rightarrow Prep\ \ NP$ |
 
-视频时间开始 36.30
+  | agenda                 | active                        | closed                        |
+  | ---------------------- | ----------------------------- | :---------------------------- |
+  | ART ($1\rightarrow 2$) | NP$\rightarrow$ ART $\circ$ N |                               |
+  | N$(2\rightarrow3$)     |                               | NP$\rightarrow$ ART N $\circ$ |
+  | NP(1$\rightarrow$3)    | S$\rightarrow$NP $\circ$ VP   |                               |
+  | V(3$\rightarrow$4)     | VP$\rightarrow$V $\circ$ NP   |                               |
+  | ART (4$\rightarrow$5)  | NP$\rightarrow$ ART $\circ$ N |                               |
+  | N(5$\rightarrow$6)     |                               | NP$\rightarrow$ Det N $\circ$ |
+  | NP(4$\rightarrow$6)    |                               | VP$\rightarrow$ V NP $\circ$  |
+  | VP(3$\rightarrow$ 6)   |                               | S$\rightarrow$ NP VP $\circ$  |
+
+### 自底向上分析法-CYK
+
+| S    |      |      |      |      |
+| ---- | ---- | ---- | ---- | ---- |
+|      |      |      |      |      |
+|      |      | VP   |      |      |
+| NP   |      |      | NP   |      |
+| ART  | N    | V    | ART  | N    |
+| the  | boy  | hits | the  | Dog  |
+
+### 转移网络文法
+
+
 
 ## 4 自然语言句法
 
