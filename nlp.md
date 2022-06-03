@@ -210,31 +210,33 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
 ## 4 自然语言句法
 
-### 助动词与动词短语
+### 英语助动词
 
-结合新规则和特征约束描述有助动词的句子结构
+* 助动词：can + VP[pres]， will have + VP[pastprt] ， was + VP[ing]，should have + VP[pastprt]
 
-* 助动词的分类
+* 简单句中，首次出现的动词必须与主语的AGR一致，且必为限定式的。
+* 解决方案：通过引入助动词的次范畴特征约束其后的VP，来描述有助动词的句子结构。
+* 助动词的分类：
+  * 主要助动词：be，have，既能做助动词，也能做主动词，分列词典不同的条目；
+  * 情态动词：只以限定式出现：do(did), can(could), may(might), shall(should), will(would), must, need及dare；另外还有可充当此功能的短语，如ought to, used to, 及be going to。
+* **添加规则：**$VP\rightarrow (AUX\ COMPFROM\ ?s)(VP\ VFORM\ ?s)$
+  * 其中**COMPFORM**特征即用来显示助动词后VP的VFORM特征
+  * COMPFORM取值范围
+  * ![image-20220530151521389](nlp.assets/image-20220530151521389.png)
+  * 用上述规则可能有过生成的问题，e.g. I must be having been singing. 对上述规则合理
+  * 引入新布尔特征MAIN，表示动词为主动词（+）还是助动词（-），关于be的规则写为：
+  * $VP\rightarrow AUX[be]\ VP[ing,\ +MAIN]$
+  * 常见的助动词的词典用法见第四章PPT
 
-  * 主要助动词：be, have
-  * 情态动词:do, can,used to, be going to等等
-* 处理方法
+### 被动语态
 
-  * $VP \rightarrow(AUX\ COMPFORM?s)(VP\ VFORM?s)$
-    * 其中COMPFORM表示一个特征，COMPFORM特征用来表明VP的VFORM是什么
-    * Q：？s表示什么 ？AUX应该表示助动词
-  * COMPFORM特征的取值范围
-	* ![image-20220530151521389](nlp.assets/image-20220530151521389.png)
-  * 助动词be需要进一步约束（由于be 后不能跟其他助动词）
-    * $VP\rightarrow AUX[be]\ VP[ing,+MAIN]$
-      * []表示前面的部分(AUX, VP)只取[]内的值
-      * Q：+表示什么？
+* 引入新的布尔特征PASS表示VP是否为被动语态；
+* 新规则：$VP\rightarrow\ AUX[be]\ VP[ing,\ +PASS],\ VP[+PASS]\rightarrow AUX[be]\ VP[pastprt,\ +MAIN]$
+* 问题：被动语态中，VP可能缺少作为宾语的NP
+  * 引入新的布尔特征PASSGAP表示VP是否为被动语态且缺少宾语NP
+  * 规则分解为：$VP[-passgap,\ +MAIN]\rightarrow\ V[\_np]\ NP,\ VP[+passgap,\ +MAIN]\rightarrow V[\_np]$
 
-### 被动语态（pass）
-
-定义了一些规则，看PPT
-
-### 语言中的移位现象(介绍性)
+### 语言中的移位现象
 
 * 一般疑问句的局部移位：中主语与助动词（或者额外加了个do）互换
 * 特殊疑问句的无界移位：
@@ -267,17 +269,17 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
 #### 特征系统
 
-* 成分的搭配间需要满足一定的约束（名词的单复数），引入特征结构来对成分进行一步刻画
+* 句子成分之间的搭配有一定的**约束**（如名词的单复数和冠词单复数的对应关系）
+
+* 方便的做法是引入**特征结构**（feature structure）来定义成分。
 
   * e.g. 冠词a
 
-    * **ART1: (CAT ** **ART**
+    * **ART1: (CAT ** **ART** 词性特征
 
-      ​       **ROOT** **a**
+      ​       **ROOT** **a** 词根
 
-      ​       **NUMBER** **s)** 
-
-    * ART1称为特征结构，CAT应该是指成分
+      ​       **NUMBER** **s)** 单复数特征 
 
 * 特征结构之间可以嵌套组成表达能力更强的特征结构
 
@@ -296,36 +298,41 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 #### **扩充文法（重点）**
 
 * 通过引入句子成分的特征变量来实现扩充
+
 * $(NP\ \ NUMBER?n)\rightarrow(ART\ \ NUMBER?n) (N\ \ NUMBER ?n)$
-  * 这个规则暗含了NP，ART，N这三个成分的NUMBER特征的值要相同，因此下面的例子不合法
-    * ![image-20220530172341278](nlp.assets/image-20220530172341278.png)
-* 一些规则规定
-  * ![image-20220530173808149](nlp.assets/image-20220530173808149.png)
+  * 这个规则暗含了NP，ART，N这三个成分的NUMBER特征的值要相同，因此
+    
+  * 1. $( NP\quad 1\ (ART\ \boldsymbol{NUMBER}\ s)\quad 2\ (N\ \boldsymbol{NUMBER}\ s))$
+    2. $( NP\ \boldsymbol{NUMBER}\ s\quad 1\ (ART\ \boldsymbol{NUMBER}\ s)\quad 2\ (N\ \boldsymbol{NUMBER}\ p))$
+    
+    都是不合法的，1中NP不包含NUMBER，2中NUMBER特征不一致
+  
+* 二义性：
+  * fish单复数同行，在词典中可表示为$(N\ \boldsymbol{ROOT}\ fish\ \boldsymbol{NUMBER}\ ?n)$,表示特征可选；
+  * 约束变元：$(N\ \boldsymbol{ROOT}\ fish\ \boldsymbol{NUMBER}\ ?n\{s\ p\})$
 
 ### 英语的基本特征系统
 
-*  人称和数（第一人称单数，复数等等）
+*  人称和数（第1/2/3人称单/复数）**(AGR)**
 
-  * 一般用一个特征AGR表示，可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
-  * are 的AGR特征取值$\{2s, 1p, 2p, 3p\}$
+  * 可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
+  * eg.  be动词$are$的AGR特征取值可以是$\{2s, 1p, 2p, 3p\}$
 
-*  动词形式
+*  动词形式**(VFORM)**
 
-  * 用特征VFORM表示
+  * 表示动词或动词短语的时态变化或形式
 
   * 可能的取值
 
     * **base**—**动词原型**
     * **pres**—**一般现在时**
     * **past**—**一般过去时**
-    * **fin**—**限定式**(finite，等价于{**pres**, past})
+    * **fin**—**限定式**(finite，等价于{**pres**, **past**})
     * **ing**—**现在进行时**
     * **pastprt**—**过去完成时**
-    * **inf**—**不定式**
+    * **inf**—**不定式**（to+动词原型）
 
-*  **动词次范畴**
-
-   *  特征SUBCAT
+*  **动词次范畴(SUBCAT)**
 
    *  处理词与其**补足语**之间的相互作用
 
@@ -337,18 +344,50 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
          ​         $(VP\ \  VFORM\ \ inf)\}$
 
-      *  VFORM的inf取值对应不定式，动词get接NP（him）再接一个不定式作为补足语（to talk）
+      * VFORM：inf 不定式，
 
-   *  补语结构中可能含有介词短语（PP）
+      *  SUBCAT: get sb. to do 动词get接NP（NP -- him）再接一个VP中的不定式作为补足语（VP:inf -- to talk）
 
-      *  pp特征PFORM可能的取值
-         *  TO：短语以to开头
-         *  LOC：描述地点
-         *  MOT：描述路径或运动方向（we walked to the store ）
+   *  **介词短语（PP）做补语**，其对应的特征变量为**PFORM**，取值有
 
-   *  SUBCAT的一些取值及例子
+      *  TO：短语以to开头**（注意与VFORM：inf的区分）**
+      *  LOC：描述地点，包括in, on, by, inside, on top of ....
+      *  MOT：描述路径或运动方向, 包括to, from, along（we walked to the store ）
 
-      *  ![image-20220531162732850](nlp.assets/image-20220531162732850.png)
+   *  **从句（S）做补语**，由that或for开头的从句接在动词短语后，**SUBCAT**值记为_s:that, _s:for
+
+   *  布尔特征：只有两个可能取值的特征，e.g. S结构的特征**INV**表示是否倒桩，记为**+INV，-INV**
+
+   *  SUBCAT的一些取值及例子见第五章ppt
+
+### 词语形态分析与词典
+
+* 词语形态分析的规则用于分析动词变形，使词典无需将所有变形全部记录。
+  * e.g. 产生动词第三人称单数一般现在时的变换规则：
+  * $(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ base) + \text{字母s}$
+  * 由上述规则，输入want：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ base)$即得
+  * wants：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ pres\ AGR\ 3s)$
+* 其对不规则变换的动词难以适用。e.g. be的VFORM：base (be) 和VFORM：pres（am, is, are）不规则
+* 改进：引入布尔特征**IRREG-PRES**，表示动词是否具有irregular的present form，上述规则修改为
+  * $(V\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ SUBCAT\ ?s\ VFORM\ base\ IRREG-PRES -) + \text{字母s}$
+* 需要指明的不规则特征：IRREG-PRES（现在时），IRREG-PAST（过去时），IRREG-PL（复数），EN-PASTPRT（完成时+en还是+ed），不进行说明时，所有默认值均为“-”。
+* 动词时态变化的语法规则，以及常见动词的不规则特征值见第五章ppt
+
+### 书写特征文法规则时省略的约定
+
+* 1.无歧义的取值可以省略特征名（如inf只存在VFORM：inf，可将(VP VFORM inf)省略为VP[inf] )
+* 2.布尔特征统一简化为C[+B] (如 S[-INV],V[+IRREG-PRES])
+* 3.规则左右两边取值相同的特征称为**中心特征**，若其被独立定义，则文法中可省略
+  * S和VP的中心特征：VFORM，AGR； NP的中心特征：AGR
+* 简化前后的文法实例见第五章PPT
+* 针对扩充文法的线图分析法实例见第五章PPT
+
+### 通用特征系统与合一文法
+
+* 将特征结构表示为有向图（DAG）
+
+* 其中，没有输入边的结点称为源（source），DAG有唯一源点，称为根节点；没有输出边的结点称为汇（sink）；
+* 图合一算法（第五章PPT）
 
 
 ## 6 统计语言模型
