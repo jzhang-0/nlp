@@ -97,8 +97,8 @@
       * 限制：$A，B$非终结符，$a$终结符
     * **右线性文法**：产生式：$A\rightarrow aB$或$A\rightarrow a$
       * 限制：$A,B$非终结符，$a$终结符
-* 索引文法（没具体例子，ppt太垃圾）
-  * 和形式文法比起来多了个$V_I$表示索引的有限集合
+
+
 * **范畴文法（重点）**
   *  核心想法：把语言中的**各种成分对应为某种“类型”/“范畴”**，把语言结构的**构造过程对应为”类型“/“范畴”**之间的演算过程
   *  基本范畴：S（句子），N（名词）
@@ -110,7 +110,58 @@
      *  ![image-20220602173506588](nlp.assets/image-20220602173506588.png)
      *  ![image-20220602174440507](nlp.assets/image-20220602174440507.png)
 
-* 图灵机（pass）
+### 范畴文法
+
+* 核心思想：把语言中的各种成分对应为某种类型/范畴，把构造过程对应为其演算过程。
+* 基本范畴：句子$S$，名词$N$
+* 任意一个语言成分的范畴由$S,N$和运算符'/','\\','(',')'构成
+* 两语言成分间发生结合关系时作对应的“乘法”运算，关键在于“约分”
+* 不同词性的**范畴表示**和**举例**见第二章P5
+* 存在问题：
+
+  * 范畴标记和词性不是一一对应的，确定具体词的范畴标记有难度；
+  * 不负载在词上的结构（如汉语的联合结构（今天或明天）、连谓结构（他**站**起来**走**过去**拿**书））很难纳入范畴语法；
+  * 超距相关的成分（如“王冕死了父亲”中的“王冕”和“父亲”）很难建立约分关系；
+  * 像汉语这样语序灵活、填项省略的语言很难用范畴文法描述。
+
+
+
+### 索引文法
+
+* 索引文法（没具体例子，ppt太垃圾）
+  * 和形式文法比起来多了个$V_I$表示索引的有限集合
+
+(Index Grammar)介于1型和2型之间的语法类别，除此之外还有树粘接文法（TAG：Tree Adjoining Grammar）
+
+* 定义为五元组$\{V_T, V_N,V_I, S, P\}$,和形式文法相比多出$V_I$表示索引的有限集合
+
+* $P$为规则的有限集合，可能的形式如下，其中$A,B\in V_N,f\in V_I,\alpha\in(V_N\cup V_T)^*$
+
+  * 1) $A\rightarrow\alpha$
+
+    2. $A\rightarrow B(f)$
+
+    3. $A(f)\rightarrow\alpha$
+
+* 规则的推导如下,其中，当$X_i\in V_N,\delta_i=\delta; X_i\in V_T,\delta_i=\varepsilon$
+
+  * 形如1.的规则$A\rightarrow X_1 X_2\cdots X_k$,$\beta A(\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
+  * 形如2.的规则$A\rightarrow B(f)$，$\beta A(\delta)\gamma\Rightarrow\beta B(f\delta)\gamma$
+  * 形如3.的规则$A(f)\rightarrow X_1X_2\cdots X_k$,$\beta A(f\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
+
+
+
+* 图灵机：第二章P6-7
+
+用上下文无关文法描述自然语言：
+
+
+* 1. 正则语法描述能力太弱，CSG计算复杂度太高；
+  2. CFG的二分特性与人类心理思维规律接近；
+  3. CFG能反映自然语言句子的层次特性，从而得到句子的句法结构；
+  4. CFG能表示句法歧义（见第二章P9）
+  5. 从描述能力而言，CFG不足以描述自然语言，为了弥补需要其他手段扩充其描述能力。
+
 
 
 
@@ -123,9 +174,67 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 * CFG规则（e.g. $S \rightarrow NP,VP$）
 * 看手写讲义
 
-### CYK
+<!-- ### CYK
 
-视频时间开始 36.30
+视频时间开始 36.30 -->
+
+### 自顶向下分析法
+
+* 又称基于预测的方法，先产生对出现成分的预期，再分析字符以验证预期
+
+* 基础的分析过程见ppt第三章P1-4
+
+* **一种改进方法：**在状态描述中加入正整数表示分析的当前位置
+
+Eg. $ _1\ The\ _2\ old\ _3\ man\ _4\ cried\ _5$,分析过程见第三章P5
+
+### 自底向上分析法-线图分析法
+
+* 又称基于归约的方法，若整个字符串被归约为$S$,则分析成功。
+
+* agenda选取数据结构：堆栈-深度优先，队列-广度优先
+
+https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.click
+
+* 举例：分析句子 $ _1\ the\ _2\ boy\ _3\ hits\ _4\ the\ _5\ dog\ _6$
+
+* | Rules                                                        |
+  | ------------------------------------------------------------ |
+  | $S\rightarrow NP\ \ VP$, $NP\rightarrow ART\ \ N$, $VP\rightarrow V\ \ NP $, $VP \rightarrow VP\ \ PP$ , $PP\rightarrow Prep\ \ NP$ |
+
+  | agenda                 | active                        | closed                        |
+  | ---------------------- | ----------------------------- | :---------------------------- |
+  | ART ($1\rightarrow 2$) | NP$\rightarrow$ ART $\circ$ N |                               |
+  | N$(2\rightarrow3$)     |                               | NP$\rightarrow$ ART N $\circ$ |
+  | NP(1$\rightarrow$3)    | S$\rightarrow$NP $\circ$ VP   |                               |
+  | V(3$\rightarrow$4)     | VP$\rightarrow$V $\circ$ NP   |                               |
+  | ART (4$\rightarrow$5)  | NP$\rightarrow$ ART $\circ$ N |                               |
+  | N(5$\rightarrow$6)     |                               | NP$\rightarrow$ Det N $\circ$ |
+  | NP(4$\rightarrow$6)    |                               | VP$\rightarrow$ V NP $\circ$  |
+  | VP(3$\rightarrow$ 6)   |                               | S$\rightarrow$ NP VP $\circ$  |
+
+### 自底向上分析法-CYK
+
+| S    |      |      |      |      |
+| ---- | ---- | ---- | ---- | ---- |
+|      |      |      |      |      |
+|      |      | VP   |      |      |
+| NP   |      |      | NP   |      |
+| ART  | N    | V    | ART  | N    |
+| the  | boy  | hits | the  | Dog  |
+
+### 转移网络文法
+
+转移网络由节点和带标记的弧组成，一个节点被定义为初始节点。
+
+递归转移网络（Recursive Transition Network），弧不仅可以指向词性，也可指向其他网络。
+
+具体分析过程见第三章P11
+
+### 自顶而下线图分析法
+
+略，分析过程见第三章P12
+
 
 ## 4 自然语言句法
 
