@@ -56,7 +56,9 @@
 
   $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
 
-  $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
+  $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ $
+
+  $5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
 
   其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
 
@@ -75,7 +77,7 @@
   ​     John ate ART N     (重写NP)
 
   ​     John ate the N      (重写ART)
-
+  
   ​     John ate the apple   (重写N) 
 
 ### 乔姆斯基文法
