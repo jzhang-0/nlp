@@ -226,7 +226,7 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
   * 用上述规则可能有过生成的问题，e.g. I must be having been singing. 对上述规则合理
   * 引入新布尔特征MAIN，表示动词为主动词（+）还是助动词（-），关于be的规则写为：
   * $VP\rightarrow AUX[be]\ VP[ing,\ +MAIN]$
-  * 常见的助动词的词典用法见第四章PPT
+  * 常见的助动词的词典用法见第四章P3
 
 ### 被动语态
 
@@ -235,33 +235,72 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 * 问题：被动语态中，VP可能缺少作为宾语的NP
   * 引入新的布尔特征PASSGAP表示VP是否为被动语态且缺少宾语NP
   * 规则分解为：$VP[-passgap,\ +MAIN]\rightarrow\ V[\_np]\ NP,\ VP[+passgap,\ +MAIN]\rightarrow V[\_np]$
+* 被动语态常用文法见第四章P3
 
 ### 语言中的移位现象
 
-* 一般疑问句的局部移位：中主语与助动词（或者额外加了个do）互换
-* 特殊疑问句的无界移位：
+* 英语中疑问句具有的规律
+* 一般疑问句：**局部移位**，主语与助动词互换（**主助倒置**），若没有助动词则需添加do作为助动词；
+* 特殊疑问句：**无界移位**，删去提问的部分，替换为对应的疑问词置于句首；
   * ![image-20220530154404529](nlp.assets/image-20220530154404529.png)
-* 处理方法
-  * 由于特殊疑问句形式多样，希望能进行统一处理
-  * 句子缺失的成分用缺位(gap)，移入的成分称为填充成分(filler)
+* 困难：
+  * 考虑上述例子，对 What will the fat man **angrily put in the corner**?
+    * angrily put in the corner不是陈述句中一个合法的VP（缺少 the book），只在疑问句中合法；
+    * 上述有缺失部分的VP只能对应特殊疑问词what，与其他疑问词组合也是不合法的（如where）。
+    * **（*）**不能对从句里的词提问，如The man who was holding two balloons will put the box in the corner. 中对balloons提问
+  
+* 常见的分析方法
+  * 句子缺失的成分称为**缺位(gap)**，移入的成分称为**填充成分(filler)**
   * e.g. 
     * What will the fat man angrily put in the corner? -> angrily put what in the corner?
     * What will the fat man angrily put the book in?” - > angrily put the book in what?
+  * 分析时，假定疑问词填充gap，对填充后的句子进行测试，包括主谓一致性，代词的格和动词的及物性等。
 
 ### 上下文无关文法中的疑问句处理
 
-#### 一般疑问句的处理
+#### 一般疑问句
 
-* $  S[+INV]\rightarrow (AUX\ AGR?a\ \ SUBCAT ?v)(NP \ AGR ?a) (VP\ \ VFORM ?v)$
-  * Q：+INV 应该是疑问句的表示方式？
-  * VP 具有合适的VFORM
-  * Q： AGR？a表示什么？，SUBCAT？v表示什么
+* $  S[+INV]\rightarrow (AUX\ AGR\ ?a\ \ SUBCAT\ ?v)(NP \ AGR\ ?a) (VP\ \ VFORM\ ?v)$
+  * +INV：倒桩句 ，AUX在NP前；
+  * 助动词 AUX和主语NP的AGR（人称单复数）一致；
+  * AUX和VP的VFORM一致。
 
-#### 特殊疑问句（看ppt，可能比较重要）
+#### 特殊疑问句（难点）
 
-### 关系从句（pass）
+* 引入特征**GAP**来处理特殊疑问句，该特征从母成分传向子成分，直至在句中找到缺位的合适位置。
+* 规则右边是缺位的，故不需要有输入$(\varepsilon)$,
+* e.g. $(NP\ GAP\ ((CAT\ NP)\ (AGR\ ?a))\ AGR\ ?a\ )\rightarrow\varepsilon$
+  * 表示当前缺位的成分为NP，则该规则可直接“无中生有”得到一个NP成分。
 
+##### 	传递GAP特征的文法
 
+ 	*  该类文法有两种通用方法,取决于**中心成分**是否为词性**（CAT）**：
+ 	*   $(S\ GAP\ ?g)\rightarrow\ (NP\ GAP\ -)(VP\ GAP\ ?g)$的GAP属性只能包含在VP中
+ 	*   中心成分为词性的规则，能导出两条规则，缺位能且仅能出现在一个位置：$(VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ ?g)(PP\ GAP\ -),\quad (VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ -)(PP\ GAP\ ?g)$
+
+##### 	Filler的产生
+
+* 引入特征**WH**，若值为Q表示该词（或短语）可以引导问句，若值为R表示可以引导从句（见关系从句）；
+* 常用的特殊疑问词在字典中的特征见第四章P6
+* 由此得到处理特殊疑问句的文法，同见P6
+
+### 带缺位的句法分析
+
+考到看ppt现学吧，第四章P6-7
+
+### 关系从句
+
+* 基础规则：$CNP\rightarrow CNP\ REL$
+* REL表示从句，关系从句与特殊疑问句结构相似，疑问词作连接词，后接带gap的S。
+* e.g.$REL\rightarrow\ (NP\ WH\ R\ AGR\ ?a)(S[-INV,fin]\ GAP(NP\ AGR\ ?a))$ 
+  * 如 man（CNP）who（NP WH R AGR {1s,...}) I visit (S[-INV,fin] GAP（NP AGR {1s}))
+* e.g. $REL\rightarrow\ (PP\ WH\ R\ PFORM\ ?a)(S[-INV,fin]\ GAP(PP\ PFORM\ ?a))$ 
+  * 如 place (CNP) where (PP WH R PFORM loc) we visit (S[-INV,fin] GAP(PP PFORM loc))
+
+* 疑问词充当主语：$REL\rightarrow NP[R]\ VP[fin]$
+  * 如 man who visits me
+* 不以疑问词开头的从句：$REL \rightarrow(S[fin]\ GAP\ (NP\ AGR\ ?a)),\ REL\rightarrow(VP\ VFORM\ \{ing,\ pastprt\})$
+  * 如 the one I chose, the work done by her, the man leaving the room等
 
 ## 5 特征和扩充文法
 
