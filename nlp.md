@@ -338,10 +338,9 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
   * 表示当前缺位的成分为NP，则该规则可直接“无中生有”得到一个NP成分。
 
 ##### 	传递GAP特征的文法
-
- 	*  该类文法有两种通用方法,取决于**中心成分**是否为词性**（CAT）**：
- 	*   $(S\ GAP\ ?g)\rightarrow\ (NP\ GAP\ -)(VP\ GAP\ ?g)$的GAP属性只能包含在VP中
- 	*   中心成分为词性的规则，能导出两条规则，缺位能且仅能出现在一个位置：$(VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ ?g)(PP\ GAP\ -),\quad (VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ -)(PP\ GAP\ ?g)$
+*  该类文法有两种通用方法,取决于**中心成分**是否为词性**（CAT）**：
+*   $(S\ GAP\ ?g)\rightarrow\ (NP\ GAP\ -)(VP\ GAP\ ?g)$的GAP属性只能包含在VP中
+*   中心成分为词性的规则，能导出两条规则，缺位能且仅能出现在一个位置：$(VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ ?g)(PP\ GAP\ -),\quad (VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ -)(PP\ GAP\ ?g)$
 
 ##### 	Filler的产生
 
@@ -467,21 +466,21 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
    *  SUBCAT的一些取值及例子见第五章ppt
 
 ### 词语形态分析与词典
-      *  pp特征PFORM可能的取值
-         *  TO：短语以to开头
-         *  LOC：描述地点
-         *  MOT：描述路径或运动方向（we walked to the store ）
+*  pp特征PFORM可能的取值
+   *  TO：短语以to开头
+   *  LOC：描述地点
+   *  MOT：描述路径或运动方向（we walked to the store ）
       *  ![image-20220531171206801](nlp.assets/image-20220531171206801.png)
-* 词语形态分析的规则用于分析动词变形，使词典无需将所有变形全部记录。
+*  词语形态分析的规则用于分析动词变形，使词典无需将所有变形全部记录。
   * e.g. 产生动词第三人称单数一般现在时的变换规则：
   * $(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ base) + \text{字母s}$
   * 由上述规则，输入want：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ base)$即得
   * wants：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ pres\ AGR\ 3s)$
-* 其对不规则变换的动词难以适用。e.g. be的VFORM：base (be) 和VFORM：pres（am, is, are）不规则
-* 改进：引入布尔特征**IRREG-PRES**，表示动词是否具有irregular的present form，上述规则修改为
+*  其对不规则变换的动词难以适用。e.g. be的VFORM：base (be) 和VFORM：pres（am, is, are）不规则
+*  改进：引入布尔特征**IRREG-PRES**，表示动词是否具有irregular的present form，上述规则修改为
   * $(V\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ SUBCAT\ ?s\ VFORM\ base\ IRREG-PRES -) + \text{字母s}$
-* 需要指明的不规则特征：IRREG-PRES（现在时），IRREG-PAST（过去时），IRREG-PL（复数），EN-PASTPRT（完成时+en还是+ed），不进行说明时，所有默认值均为“-”。
-* 动词时态变化的语法规则，以及常见动词的不规则特征值见第五章P5
+*  需要指明的不规则特征：IRREG-PRES（现在时），IRREG-PAST（过去时），IRREG-PL（复数），EN-PASTPRT（完成时+en还是+ed），不进行说明时，所有默认值均为“-”。
+*  动词时态变化的语法规则，以及常见动词的不规则特征值见第五章P5
 
 ### 书写特征文法规则时省略的约定
 
