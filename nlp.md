@@ -30,53 +30,99 @@
 
 ## 2. 形式语言与自动机
 
-* 基本概念
+### 基本概念
 
-  * 文法
-    * 给出生成语言中所有句子的方法
-    * 当且仅当能够用该方法产生的句子才属于该语言
-  * 自动机
-    * 给出识别该语言中句子的机械方法
+* 文法
+  * 给出生成语言中所有句子的方法
+  * 当且仅当能够用该方法产生的句子才属于该语言
+* 自动机
+  * 给出识别该语言中句子的机械方法
 
-* 形式文法
+### 形式文法
 
-  * 四元组进行描述$\{V_T, V_N, S, P\}$
+* 四元组进行描述$\{V_T, V_N, S, P\}$
 
-    * $V_T$：终结符（Terminals）(单词)
-    * $V_N$：非终结符（Non-terminals）（形式变量）
-    * $S$：起始符（形式变量，归在VN中，不用写）
-    * $P$：具体的生成规则
+  * $V_T$：终结符（Terminals）(单词)
+  * $V_N$：非终结符（Non-terminals）（形式变量）
+  * $S$：起始符（形式变量，归在VN中，不用写）
+  * $P$：具体的生成规则
 
-  * 例子
+* 例子
 
-    设形式文法G的
+  设形式文法G的
 
-    $V_T$={the, John, ate, apple}，
+  $V_T$={the, John, ate, apple}，
 
-    $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
+  $V_N=\{S, NP, VP, ART, N, V, NAME\}$, 
 
-    $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ 5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
+  $P=\{1. S\rightarrow NP\quad VP, 2. VP\rightarrow V\quad NP, 3. NP\rightarrow NAME, 4. NP\rightarrow ART\quad N,\\ $
 
-    其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
+  $5. NAME\rightarrow John, 6. V\rightarrow ate, 7. ART\rightarrow the, 8. N\rightarrow apple\}$
 
-    1，3，5；2，6；4，7，8
+  其中NP代表名词短语、VP代表动词短语等等。则句子“John ate the apple”的生成过程如下
 
-       S - NP VP            (重写S)
+  1，3，5；2，6；4，7，8
 
-    ​     NAME VP         (重写NP)
+     S - NP VP            (重写S)
 
-    ​     John VP          (重写NAME)
+  ​     NAME VP         (重写NP)
 
-    ​     John V NP         (重写VP)
+  ​     John VP          (重写NAME)
 
-    ​     John ate NP        (重写V)
+  ​     John V NP         (重写VP)
 
-    ​     John ate ART N     (重写NP)
+  ​     John ate NP        (重写V)
 
-    ​     John ate the N      (重写ART)
+  ​     John ate ART N     (重写NP)
 
-    ​     John ate the apple   (重写N) 
+  ​     John ate the N      (重写ART)
+  
+  ​     John ate the apple   (重写N) 
 
+### 乔姆斯基文法
+
+* 刻画[形式文法](https://baike.baidu.com/item/形式文法)表达能力的一个分类谱系，由Chomsky于1956年提出的。
+* 包括四个层次：0型，1型，2型，3型，由前到后有包含关系
+* 下述表示中，大写英文字母表示非终结字符，希腊字母表示非终结与终结字符构成的字串。
+* **0型文法**：短语文法，相当于图灵机（PSG：Phrasal Structure Grammar），半可判定的
+  * 产生式：$\alpha\rightarrow\beta$（无限制）
+  * 限制：$\alpha,\beta$为包含非终结符或终结符的字串，$\beta$可为空串；$\alpha$至少包含一非终结符
+* **1型文法**：上下文有关文法，相当于线性有界非确定图灵机(CSG：Context Sensitive Grammar)，NP完全
+  * 产生式：$\alpha A\beta\rightarrow \alpha\gamma\beta$
+  * 限制：$A$非终结字符，$\gamma$不为空串，右侧不能包含$S$.
+* **2型文法**：上下文无关文法，相当于非确定下推自动机(CFG: Context Free Grammar)，多项式的
+  * 产生式：$A\rightarrow \gamma$
+  * 限制：$A$非终结字符，$\gamma$字串
+* **3型文法**：正规文法，相当于有限状态自动机，又分为左线性文法和右线性文法(RG: Regular Grammar)，线性复杂度的
+  * **左线性文法**：产生式：$A\rightarrow Ba$或$A\rightarrow a$
+    * 限制：$A，B$非终结符，$a$终结符
+  * **右线性文法**：产生式：$A\rightarrow aB$或$A\rightarrow a$
+    * 限制：$A,B$非终结符，$a$终结符
+
+### 索引文法
+
+(Index Grammar)介于1型和2型之间的语法类别，除此之外还有树粘接文法（TAG：Tree Adjoining Grammar）
+
+* 定义为五元组$\{V_T, V_N,V_I, S, P\}$,和形式文法相比多出$V_I$表示索引的有限集合
+
+* $P$为规则的有限集合，可能的形式如下，其中$A,B\in V_N,f\in V_I,\alpha\in(V_N\cup V_T)^*$
+
+  * 1) $A\rightarrow\alpha$
+
+    2. $A\rightarrow B(f)$
+
+    3. $A(f)\rightarrow\alpha$
+
+* 规则的推导如下,其中，当$X_i\in V_N,\delta_i=\delta; X_i\in V_T,\delta_i=\varepsilon$
+
+  * 形如1.的规则$A\rightarrow X_1 X_2\cdots X_k$,$\beta A(\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
+  * 形如2.的规则$A\rightarrow B(f)$，$\beta A(\delta)\gamma\Rightarrow\beta B(f\delta)\gamma$
+  * 形如3.的规则$A(f)\rightarrow X_1X_2\cdots X_k$,$\beta A(f\delta)\gamma\Rightarrow\beta X_1(\delta_1)X_2(\delta_2)\cdots X_k(\delta_k)\gamma$
+
+
+* 其他文法：链文法，依存文法，范畴文法
+
+### 范畴文法
 
 * **乔姆斯基文法**
   * 一种短语文法（PSG：Phrasal Structure Grammar）
@@ -157,24 +203,18 @@
 
 * 用上下文无关文法描述自然语言：
   1. 正则语法描述能力太弱，CSG计算复杂度太高；
+* 图灵机：第二章P6-7
+
+用上下文无关文法描述自然语言：
+
+
+* 1. 正则语法描述能力太弱，CSG计算复杂度太高；
   2. CFG的二分特性与人类心理思维规律接近；
   3. CFG能反映自然语言句子的层次特性，从而得到句子的句法结构；
   4. CFG能表示句法歧义（见第二章P9）
   5. 从描述能力而言，CFG不足以描述自然语言，为了弥补需要其他手段扩充其描述能力。
 
-
-
-
 ## 3 句法分析
-
-### 线图分析法
-
-https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.click
-
-* CFG规则（e.g. $S \rightarrow NP,VP$）
-* 看手写讲义
-
-<!-- ### CYK 视频时间开始 36.30 -->
 
 ### 自顶向下分析法
 
@@ -233,59 +273,99 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
 略，分析过程见第三章P12
 
-
 ## 4 自然语言句法
 
-### 助动词与动词短语
+### 英语助动词
 
-结合新规则和特征约束描述有助动词的句子结构
+* 助动词：can + VP[pres]， will have + VP[pastprt] ， was + VP[ing]，should have + VP[pastprt]
 
-* 助动词的分类
+* 简单句中，首次出现的动词必须与主语的AGR一致，且必为限定式的。
+* 解决方案：通过引入助动词的次范畴特征约束其后的VP，来描述有助动词的句子结构。
+* 助动词的分类：
+  * 主要助动词：be，have，既能做助动词，也能做主动词，分列词典不同的条目；
+  * 情态动词：只以限定式出现：do(did), can(could), may(might), shall(should), will(would), must, need及dare；另外还有可充当此功能的短语，如ought to, used to, 及be going to。
+* **添加规则：**$VP\rightarrow (AUX\ COMPFROM\ ?s)(VP\ VFORM\ ?s)$
+  * 其中**COMPFORM**特征即用来显示助动词后VP的VFORM特征
+  * COMPFORM取值范围
+  * ![image-20220530151521389](nlp.assets/image-20220530151521389.png)
+  * 用上述规则可能有过生成的问题，e.g. I must be having been singing. 对上述规则合理
+  * 引入新布尔特征MAIN，表示动词为主动词（+）还是助动词（-），关于be的规则写为：
+  * $VP\rightarrow AUX[be]\ VP[ing,\ +MAIN]$
+  * 常见的助动词的词典用法见第四章P3
 
-  * 主要助动词：be, have
-  * 情态动词:do, can,used to, be going to等等
-* 处理方法
+### 被动语态
 
-  * $VP \rightarrow(AUX\ COMPFORM?s)(VP\ VFORM?s)$
-    * 其中COMPFORM表示一个特征，COMPFORM特征用来表明VP的VFORM是什么
-    * Q：？s表示什么 ？AUX应该表示助动词
-  * COMPFORM特征的取值范围
-	* ![image-20220530151521389](nlp.assets/image-20220530151521389.png)
-  * 助动词be需要进一步约束（由于be 后不能跟其他助动词）
-    * $VP\rightarrow AUX[be]\ VP[ing,+MAIN]$
-      * []表示前面的部分(AUX, VP)只取[]内的值
-      * Q：+表示什么？
+* 引入新的布尔特征PASS表示VP是否为被动语态；
+* 新规则：$VP\rightarrow\ AUX[be]\ VP[ing,\ +PASS],\ VP[+PASS]\rightarrow AUX[be]\ VP[pastprt,\ +MAIN]$
+* 问题：被动语态中，VP可能缺少作为宾语的NP
+  * 引入新的布尔特征PASSGAP表示VP是否为被动语态且缺少宾语NP
+  * 规则分解为：$VP[-passgap,\ +MAIN]\rightarrow\ V[\_np]\ NP,\ VP[+passgap,\ +MAIN]\rightarrow V[\_np]$
+* 被动语态常用文法见第四章P3
 
-### 被动语态（pass）
+### 语言中的移位现象
 
-定义了一些规则，看PPT
-
-### 语言中的移位现象(介绍性)
-
-* 一般疑问句的局部移位：中主语与助动词（或者额外加了个do）互换
-* 特殊疑问句的无界移位：
+* 英语中疑问句具有的规律
+* 一般疑问句：**局部移位**，主语与助动词互换（**主助倒置**），若没有助动词则需添加do作为助动词；
+* 特殊疑问句：**无界移位**，删去提问的部分，替换为对应的疑问词置于句首；
   * ![image-20220530154404529](nlp.assets/image-20220530154404529.png)
-* 处理方法
-  * 由于特殊疑问句形式多样，希望能进行统一处理
-  * 句子缺失的成分用缺位(gap)，移入的成分称为填充成分(filler)
+* 困难：
+  * 考虑上述例子，对 What will the fat man **angrily put in the corner**?
+    * angrily put in the corner不是陈述句中一个合法的VP（缺少 the book），只在疑问句中合法；
+    * 上述有缺失部分的VP只能对应特殊疑问词what，与其他疑问词组合也是不合法的（如where）。
+    * **（*）**不能对从句里的词提问，如The man who was holding two balloons will put the box in the corner. 中对balloons提问
+  
+* 常见的分析方法
+  * 句子缺失的成分称为**缺位(gap)**，移入的成分称为**填充成分(filler)**
   * e.g. 
     * What will the fat man angrily put in the corner? -> angrily put what in the corner?
     * What will the fat man angrily put the book in?” - > angrily put the book in what?
+  * 分析时，假定疑问词填充gap，对填充后的句子进行测试，包括主谓一致性，代词的格和动词的及物性等。
 
 ### 上下文无关文法中的疑问句处理
 
-#### 一般疑问句的处理
+#### 一般疑问句
 
-* $  S[+INV]\rightarrow (AUX\ AGR?a\ \ SUBCAT ?v)(NP \ AGR ?a) (VP\ \ VFORM ?v)$
-  * Q：+INV 应该是疑问句的表示方式？
-  * VP 具有合适的VFORM
-  * Q： AGR？a表示什么？，SUBCAT？v表示什么
+* $  S[+INV]\rightarrow (AUX\ AGR\ ?a\ \ SUBCAT\ ?v)(NP \ AGR\ ?a) (VP\ \ VFORM\ ?v)$
+  * +INV：倒桩句 ，AUX在NP前；
+  * 助动词 AUX和主语NP的AGR（人称单复数）一致；
+  * AUX和VP的VFORM一致。
 
-#### 特殊疑问句（看ppt，可能比较重要）
+#### 特殊疑问句（难点）
 
-### 关系从句（pass）
+* 引入特征**GAP**来处理特殊疑问句，该特征从母成分传向子成分，直至在句中找到缺位的合适位置。
+* 规则右边是缺位的，故不需要有输入$(\varepsilon)$,
+* e.g. $(NP\ GAP\ ((CAT\ NP)\ (AGR\ ?a))\ AGR\ ?a\ )\rightarrow\varepsilon$
+  * 表示当前缺位的成分为NP，则该规则可直接“无中生有”得到一个NP成分。
 
+##### 	传递GAP特征的文法
 
+ 	*  该类文法有两种通用方法,取决于**中心成分**是否为词性**（CAT）**：
+ 	*   $(S\ GAP\ ?g)\rightarrow\ (NP\ GAP\ -)(VP\ GAP\ ?g)$的GAP属性只能包含在VP中
+ 	*   中心成分为词性的规则，能导出两条规则，缺位能且仅能出现在一个位置：$(VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ ?g)(PP\ GAP\ -),\quad (VP\ GAP\ ?g)\rightarrow V[\_np\_pp](NP\ GAP\ -)(PP\ GAP\ ?g)$
+
+##### 	Filler的产生
+
+* 引入特征**WH**，若值为Q表示该词（或短语）可以引导问句，若值为R表示可以引导从句（见关系从句）；
+* 常用的特殊疑问词在字典中的特征见第四章P6
+* 由此得到处理特殊疑问句的文法，同见P6
+
+### 带缺位的句法分析
+
+考到看ppt现学吧，第四章P6-7
+
+### 关系从句
+
+* 基础规则：$CNP\rightarrow CNP\ REL$
+* REL表示从句，关系从句与特殊疑问句结构相似，疑问词作连接词，后接带gap的S。
+* e.g.$REL\rightarrow\ (NP\ WH\ R\ AGR\ ?a)(S[-INV,fin]\ GAP(NP\ AGR\ ?a))$ 
+  * 如 man（CNP）who（NP WH R AGR {1s,...}) I visit (S[-INV,fin] GAP（NP AGR {1s}))
+* e.g. $REL\rightarrow\ (PP\ WH\ R\ PFORM\ ?a)(S[-INV,fin]\ GAP(PP\ PFORM\ ?a))$ 
+  * 如 place (CNP) where (PP WH R PFORM loc) we visit (S[-INV,fin] GAP(PP PFORM loc))
+
+* 疑问词充当主语：$REL\rightarrow NP[R]\ VP[fin]$
+  * 如 man who visits me
+* 不以疑问词开头的从句：$REL \rightarrow(S[fin]\ GAP\ (NP\ AGR\ ?a)),\ REL\rightarrow(VP\ VFORM\ \{ing,\ pastprt\})$
+  * 如 the one I chose, the work done by her, the man leaving the room等
 
 ## 5 特征和扩充文法
 
@@ -293,17 +373,17 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
 #### 特征系统
 
-* 成分的搭配间需要满足一定的约束（名词的单复数），引入特征结构来对成分进行一步刻画
+* 句子成分之间的搭配有一定的**约束**（如名词的单复数和冠词单复数的对应关系）
+
+* 方便的做法是引入**特征结构**（feature structure）来定义成分。
 
   * e.g. 冠词a
 
-    * **ART1: (CAT ** **ART**
+    * **ART1: (CAT ** **ART** 词性特征
 
-      ​       **ROOT** **a**
+      ​       **ROOT** **a** 词根
 
-      ​       **NUMBER** **s)** 
-
-    * ART1称为特征结构，CAT应该是指成分
+      ​       **NUMBER** **s)** 单复数特征 
 
 * 特征结构之间可以嵌套组成表达能力更强的特征结构
 
@@ -322,32 +402,39 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 #### **扩充文法（重点）**
 
 * 通过引入句子成分的特征变量来实现扩充
+
 * $(NP\ \ NUMBER?n)\rightarrow(ART\ \ NUMBER?n) (N\ \ NUMBER ?n)$
-  * 这个规则暗含了NP，ART，N这三个成分的NUMBER特征的值要相同，因此下面的例子不合法
-    * ![image-20220530172341278](nlp.assets/image-20220530172341278.png)
-* 一些规则规定
-  * ![image-20220530173808149](nlp.assets/image-20220530173808149.png)
+  * 这个规则暗含了NP，ART，N这三个成分的NUMBER特征的值要相同，因此
+    
+  * 1. $( NP\quad 1\ (ART\ \boldsymbol{NUMBER}\ s)\quad 2\ (N\ \boldsymbol{NUMBER}\ s))$
+    2. $( NP\ \boldsymbol{NUMBER}\ s\quad 1\ (ART\ \boldsymbol{NUMBER}\ s)\quad 2\ (N\ \boldsymbol{NUMBER}\ p))$
+    
+    都是不合法的，1中NP不包含NUMBER，2中NUMBER特征不一致
+  
+* 二义性：
+  * fish单复数同行，在词典中可表示为$(N\ \boldsymbol{ROOT}\ fish\ \boldsymbol{NUMBER}\ ?n)$,表示特征可选；
+  * 约束变元：$(N\ \boldsymbol{ROOT}\ fish\ \boldsymbol{NUMBER}\ ?n\{s\ p\})$
 
 ### 英语的基本特征系统
 
-*  人称和数（第一人称单数，复数等等）
+*  人称和数（第1/2/3人称单/复数）**(AGR)**
 
-  * 一般用一个特征AGR表示，可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
-  * are 的AGR特征取值$\{2s, 1p, 2p, 3p\}$
+  * 可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
+  * eg.  be动词$are$的AGR特征取值可以是$\{2s, 1p, 2p, 3p\}$
 
-*  动词形式
+*  动词形式**(VFORM)**
 
-  * 用特征VFORM表示
+  * 表示动词或动词短语的时态变化或形式
 
   * 可能的取值
 
     * **base**—**动词原型**
     * **pres**—**一般现在时**
     * **past**—**一般过去时**
-    * **fin**—**限定式**(finite，等价于{**pres**, past})
+    * **fin**—**限定式**(finite，等价于{**pres**, **past**})
     * **ing**—**现在进行时**
     * **pastprt**—**过去完成时**
-    * **inf**—**不定式**
+    * **inf**—**不定式**（to+动词原型）
 
 *  **动词次范畴**（重点）
 
@@ -363,19 +450,54 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
          ​         $(VP\ \  VFORM\ \ inf)\}$
 
-      *  VFORM的inf取值对应不定式，动词get接NP（him）再接一个不定式作为补足语（to talk）
+      * VFORM：inf 不定式，
 
-   *  补语结构中可能含有介词短语（PP）
+      *  SUBCAT: get sb. to do 动词get接NP（NP -- him）再接一个VP中的不定式作为补足语（VP:inf -- to talk）
 
+   *  **介词短语（PP）做补语**，其对应的特征变量为**PFORM**，取值有
+
+      *  TO：短语以to开头**（注意与VFORM：inf的区分）**
+      *  LOC：描述地点，包括in, on, by, inside, on top of ....
+      *  MOT：描述路径或运动方向, 包括to, from, along（we walked to the store ）
+
+   *  **从句（S）做补语**，由that或for开头的从句接在动词短语后，**SUBCAT**值记为_s:that, _s:for
+
+   *  布尔特征：只有两个可能取值的特征，e.g. S结构的特征**INV**表示是否倒桩，记为**+INV，-INV**
+
+   *  SUBCAT的一些取值及例子见第五章ppt
+
+### 词语形态分析与词典
       *  pp特征PFORM可能的取值
          *  TO：短语以to开头
          *  LOC：描述地点
          *  MOT：描述路径或运动方向（we walked to the store ）
       *  ![image-20220531171206801](nlp.assets/image-20220531171206801.png)
+* 词语形态分析的规则用于分析动词变形，使词典无需将所有变形全部记录。
+  * e.g. 产生动词第三人称单数一般现在时的变换规则：
+  * $(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ ROOT\ ?r\ SUBCAT\ ?s\ VFORM\ base) + \text{字母s}$
+  * 由上述规则，输入want：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ base)$即得
+  * wants：$(V\ ROOT\ want\ SUBCAT\ \_np\_vp:inf\ VFORM\ pres\ AGR\ 3s)$
+* 其对不规则变换的动词难以适用。e.g. be的VFORM：base (be) 和VFORM：pres（am, is, are）不规则
+* 改进：引入布尔特征**IRREG-PRES**，表示动词是否具有irregular的present form，上述规则修改为
+  * $(V\ SUBCAT\ ?s\ VFORM\ pres\ AGR\ 3s)\rightarrow(V\ SUBCAT\ ?s\ VFORM\ base\ IRREG-PRES -) + \text{字母s}$
+* 需要指明的不规则特征：IRREG-PRES（现在时），IRREG-PAST（过去时），IRREG-PL（复数），EN-PASTPRT（完成时+en还是+ed），不进行说明时，所有默认值均为“-”。
+* 动词时态变化的语法规则，以及常见动词的不规则特征值见第五章P5
 
-   *  SUBCAT的一些取值及例子
+### 书写特征文法规则时省略的约定
 
-      *  ![image-20220531162732850](nlp.assets/image-20220531162732850.png)
+* 1.无歧义的取值可以省略特征名（如inf只存在VFORM：inf，可将(VP VFORM inf)省略为VP[inf] )
+* 2.布尔特征统一简化为C[+B] (如 S[-INV],V[+IRREG-PRES])
+* 3.规则左右两边取值相同的特征称为**中心特征**，若其被独立定义，则文法中可省略
+  * S和VP的中心特征：VFORM，AGR； NP的中心特征：AGR
+* 简化前后的文法实例见第五章P6
+* 针对扩充文法的线图分析法实例见第五章P7
+
+### 通用特征系统与合一文法
+
+* 将特征结构表示为有向图（DAG）
+
+* 其中，没有输入边的结点称为源（source），DAG有唯一源点，称为根节点；没有输出边的结点称为汇（sink）；
+* 图合一算法（第五章P11-13）
 
    *  SUBCAT更多的例子（动词带从句作为补足语）
 
@@ -436,21 +558,34 @@ e.g.
 
 $P(S=w_1w_2\dots w_m)=P(w_1)P(w_2|w_1)\dots P(w_m|w_1\dots w_{m-1})$
 
-问题：虽然完美，计算过于复杂
+问题：虽然考虑了完整的概率模型，但参数太多难以计算，模型中有$L^m$个参数。
 
 ##### Markov链模型（N-gram）
 
-不考虑过旧的单词，只考虑最接近的N-1个词
+不考虑过旧的单词，只考虑最接近的N-1个词，称为$n-1$阶Markov链近似
 
+一元Unigram，二元Bigram，三元Trigram
 
+* 更大的N：对下一个词的约束性信息更多，具有更大的**辨别力**
+
+* 更小的N：训练语料库中出现的次数更多，具有更高的**可靠性**
+
+* 需要对其进行折中
+* 计算N-gram模型的过程见第六章P5
 
 #### 数据平滑
 
 * 什么是数据平滑？
 
-算单词概率时，很多单词出现的概率几乎为0，对模型的预测能力有很大的影响。
+​	零概率问题：计算单词概率时，大量低频词的似然概率为0，严重削弱了模型的预测能力。
 
-为了解决这一0概率问题，提出数据平滑，想法为加大0概率的单词的概率，但总概率和为1。
+​	为解决该问题，提出**数据平滑**，加大零概率单词的概率，改进整体正确率。
+
+* 困惑度（Perplexity）：$PP_P(T)=2^{H_P(T)},\ H_p(T)=-\frac{1}{W_T}\log_2 P(T)$
+* **加1平滑**：每一种情况出现的次数都加1.（P7）
+* 减值法/折扣法
+* Good-Turing估计
+* 线性插值平滑
 
 #### 现有统计模型
 
@@ -465,8 +600,6 @@ $P(S=w_1w_2\dots w_m)=P(w_1)P(w_2|w_1)\dots P(w_m|w_1\dots w_{m-1})$
 #### 语言模型评估
 
 熵低的模型好
-
-
 
 ## 语义知识
 
