@@ -272,7 +272,7 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 * e.g. $(NP\ GAP\ ((CAT\ NP)\ (AGR\ ?a))\ AGR\ ?a\ )\rightarrow\varepsilon$
   * 表示当前缺位的成分为NP，则该规则可直接“无中生有”得到一个NP成分。
 
-##### 	传递GAP特征的文法
+##### 传递GAP特征的文法
 
  	*  该类文法有两种通用方法,取决于**中心成分**是否为词性**（CAT）**：
  	*   $(S\ GAP\ ?g)\rightarrow\ (NP\ GAP\ -)(VP\ GAP\ ?g)$的GAP属性只能包含在VP中
