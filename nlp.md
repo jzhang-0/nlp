@@ -356,7 +356,6 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
 
   * 可能的取值{1,2,3}与{s,p}组合. (s:single, p:plurality)
   * eg.  be动词$are$的AGR特征取值可以是$\{2s, 1p, 2p, 3p\}$
-
 *  动词形式**(VFORM)**
 
   * 表示动词或动词短语的时态变化或形式
@@ -370,33 +369,20 @@ https://www.bilibili.com/video/BV1F541157oQ?spm_id_from=333.337.search-card.all.
     * **ing**—**现在进行时**
     * **pastprt**—**过去完成时**
     * **inf**—**不定式**（to+动词原型）
-
 *  **动词次范畴(SUBCAT)**
-
    *  处理词与其**补足语**之间的相互作用
 
       *  e.g. I can't get him to talk.
+      *  $  (VP) \rightarrow\{(V\ \ SUBCAT \_np\_vp: inf)(NP)(VP\ \  VFORM\ \ inf)\}$
 
-      *  $  (VP) \rightarrow\{(V\ \ SUBCAT \_np\_vp: inf)$
-
-         ​         $(NP)$
-
-         ​         $(VP\ \  VFORM\ \ inf)\}$
-
-      * VFORM：inf 不定式，
-
+      *  VFORM：inf 不定式，
       *  SUBCAT: get sb. to do 动词get接NP（NP -- him）再接一个VP中的不定式作为补足语（VP:inf -- to talk）
-
    *  **介词短语（PP）做补语**，其对应的特征变量为**PFORM**，取值有
-
       *  TO：短语以to开头**（注意与VFORM：inf的区分）**
       *  LOC：描述地点，包括in, on, by, inside, on top of ....
       *  MOT：描述路径或运动方向, 包括to, from, along（we walked to the store ）
-
    *  **从句（S）做补语**，由that或for开头的从句接在动词短语后，**SUBCAT**值记为_s:that, _s:for
-
    *  布尔特征：只有两个可能取值的特征，e.g. S结构的特征**INV**表示是否倒桩，记为**+INV，-INV**
-
    *  SUBCAT的一些取值及例子见第五章ppt
 
 ### 词语形态分析与词典
